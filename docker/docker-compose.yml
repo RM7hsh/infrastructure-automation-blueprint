@@ -1,21 +1,19 @@
-version: "3"
-
 services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: ${db_name}
-      POSTGRES_USER: ${db_user}
-      POSTGRES_PASSWORD: ${db_password}
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: change_me
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
       - backend
 
   web:
-    build: .
+    image: nginx:alpine
     ports:
-      - "8080:8080"
+      - "8080:80"
     depends_on:
       - db
     networks:

@@ -12,3 +12,4 @@ all:
     db_name: app_db
     db_user: app_user
     db_password: secret
+
