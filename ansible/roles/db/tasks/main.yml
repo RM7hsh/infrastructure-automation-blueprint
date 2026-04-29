@@ -1,0 +1,35 @@
+---
+# Database role: installs and configures PostgreSQL
+
+- name: Install PostgreSQL
+  apt:
+    name: postgresql
+    state: present
+  become: yes
+
+- name: Ensure PostgreSQL is started and enabled
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Ensure a database and user exist
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: {{ db_name }}
+
+- name: Ensure database user exists with password
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: {{ db_user }}
+    password: {{ db_password }}
+
+- name: Grant privileges to the user on the database
+  become_user: postgres
+  community.postgresql.postgresql_privs:
+    db: {{ db_name }}
+    type: database
+    privs: ALL
+    objs: "{{ db_name }}"
+    roles: {{ db_user }}
