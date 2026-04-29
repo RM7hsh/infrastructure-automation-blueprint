@@ -14,7 +14,6 @@ provider "proxmox" {
   pm_tls_insecure = true
 }
 
-# Example: create a VM from a cloud‑init template
 resource "proxmox_vm_qemu" "web" {
   name        = "web"
   target_node = var.pm_node
@@ -36,9 +35,7 @@ resource "proxmox_vm_qemu" "web" {
     gateway = var.gateway
   }
 
-  # Cloud-init user data to inject SSH keys
   ciuser     = "ubuntu"
   cipassword = var.web_password
   sshkeys    = file(var.ssh_public_key)
 }
-

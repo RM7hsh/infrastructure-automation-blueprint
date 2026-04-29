@@ -1,0 +1,8 @@
+---
+# Web role handlers
+
+- name: Reload Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+  become: true

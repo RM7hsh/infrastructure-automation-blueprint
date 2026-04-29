@@ -6,7 +6,6 @@
     update_cache: true
   become: true
 
-
 - name: Install basic packages
   ansible.builtin.apt:
     name:
