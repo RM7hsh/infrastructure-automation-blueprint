@@ -1,0 +1,6 @@
+---
+# Default variables for the database role
+
+db_name: app_db
+db_user: app_user
+db_password: change_me

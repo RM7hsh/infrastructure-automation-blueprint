@@ -1,0 +1,17 @@
+---
+# Top level playbook that applies roles to servers
+
+- hosts: all
+  become: yes
+  roles:
+    - role: common
+
+- hosts: webservers
+  become: yes
+  roles:
+    - role: web
+
+- hosts: dbservers
+  become: yes
+  roles:
+    - role: db
