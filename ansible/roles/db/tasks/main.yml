@@ -1,35 +1,40 @@
 ---
 # Database role: installs and configures PostgreSQL
 
+# Install PostgreSQL package
 - name: Install PostgreSQL
-  apt:
+  ansible.builtin.apt:
     name: postgresql
     state: present
-  become: yes
+  become: true
 
+# Ensure the PostgreSQL service is running and enabled on boot
 - name: Ensure PostgreSQL is started and enabled
-  service:
+  ansible.builtin.service:
     name: postgresql
     state: started
-    enabled: yes
-  become: yes
+    enabled: true
+  become: true
 
-- name: Ensure a database and user exist
+# Create the application database (idempotent)
+- name: Ensure a database exists
   become_user: postgres
   community.postgresql.postgresql_db:
-    name: {{ db_name }}
+    name: "{{ db_name }}"
 
+# Create the application database user with the desired password
 - name: Ensure database user exists with password
   become_user: postgres
   community.postgresql.postgresql_user:
-    name: {{ db_user }}
-    password: {{ db_password }}
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
 
+# Grant all privileges on the database to the application user
 - name: Grant privileges to the user on the database
   become_user: postgres
   community.postgresql.postgresql_privs:
-    db: {{ db_name }}
+    db: "{{ db_name }}"
     type: database
     privs: ALL
     objs: "{{ db_name }}"
-    roles: {{ db_user }}
+    roles: "{{ db_user }}"

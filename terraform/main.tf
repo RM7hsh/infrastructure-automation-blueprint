@@ -28,19 +28,19 @@ resource "proxmox_vm_qemu" "web" {
   agents      = 1
 
   network {
-    model    = "virtio"
-    bridge   = var.network_bridge
+    model = "virtio"
+    bridge = var.network_bridge
     firewall = true
   }
 
   ipconfig0 = {
-    ip      = var.web_ip
+    ip = var.web_ip
     gateway = var.gateway
   }
 
   # Cloud-init user data to inject SSH keys
   ciuser     = "ubuntu"
-  cipassword = "${var.web_password}"
+  cipassword = var.web_password
   sshkeys    = file(var.ssh_public_key)
 
   # Wait until the guest agent is ready

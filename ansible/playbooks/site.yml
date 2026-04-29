@@ -1,17 +1,25 @@
 ---
 # Top level playbook that applies roles to servers
 
-- hosts: all
-  become: yes
+## Top level playbook that applies roles to servers
+
+## Apply the common role to all hosts
+- name: Apply common role to all hosts
+  hosts: all
+  become: true
   roles:
     - role: common
 
-- hosts: webservers
-  become: yes
+## Apply the web role to web servers
+- name: Configure web servers
+  hosts: webservers
+  become: true
   roles:
     - role: web
 
-- hosts: dbservers
-  become: yes
+## Apply the database role to database servers
+- name: Configure database servers
+  hosts: dbservers
+  become: true
   roles:
     - role: db
