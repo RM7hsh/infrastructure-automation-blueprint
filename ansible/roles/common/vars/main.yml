@@ -1,4 +1,2 @@
 ---
-# Default variables for the common role
-
 common_admin_group: admin

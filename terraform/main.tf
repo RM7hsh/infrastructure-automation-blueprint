@@ -1,5 +1,4 @@
 terraform {
-  required_version = ">= 1.3.0"
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
@@ -9,7 +8,6 @@ terraform {
 }
 
 provider "proxmox" {
-  # Proxmox API endpoint and authentication.  Replace with real values in your environment.
   pm_api_url      = var.pm_api_url
   pm_user         = var.pm_user
   pm_password     = var.pm_password
@@ -18,7 +16,7 @@ provider "proxmox" {
 
 # Example: create a VM from a cloud‑init template
 resource "proxmox_vm_qemu" "web" {
-  name        = "web-01"
+  name        = "web"
   target_node = var.pm_node
   vmid        = var.web_vmid
   clone       = var.template_name
@@ -28,13 +26,13 @@ resource "proxmox_vm_qemu" "web" {
   agents      = 1
 
   network {
-    model = "virtio"
-    bridge = var.network_bridge
+    model    = "virtio"
+    bridge   = var.network_bridge
     firewall = true
   }
 
   ipconfig0 = {
-    ip = var.web_ip
+    ip      = var.web_ip
     gateway = var.gateway
   }
 
@@ -42,7 +40,5 @@ resource "proxmox_vm_qemu" "web" {
   ciuser     = "ubuntu"
   cipassword = var.web_password
   sshkeys    = file(var.ssh_public_key)
-
-  # Wait until the guest agent is ready
-  timeout = "5m"
 }
+

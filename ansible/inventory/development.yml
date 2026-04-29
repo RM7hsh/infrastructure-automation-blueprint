@@ -1,15 +1,14 @@
 all:
   hosts:
-    web-01:
-      ansible_host: 192.168.100.10
+    web:
+      ansible_host: 192.168.56.10
       ansible_user: ubuntu
-    db-01:
-      ansible_host: 192.168.100.11
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    db:
+      ansible_host: 192.168.56.11
       ansible_user: ubuntu
-  children:
-    webservers:
-      hosts:
-        web-01:
-    dbservers:
-      hosts:
-        db-01:
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+  vars:
+    db_name: app_db
+    db_user: app_user
+    db_password: secret

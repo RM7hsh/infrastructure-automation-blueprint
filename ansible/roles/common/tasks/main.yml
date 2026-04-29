@@ -1,31 +1,17 @@
 ---
-# Common role: baseline configuration for all servers
+# Common role tasks
 
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
   become: true
 
-- name: Upgrade all packages to the latest version
-  ansible.builtin.apt:
-    upgrade: dist
-  become: true
 
-- name: Install common utilities
+- name: Install basic packages
   ansible.builtin.apt:
     name:
       - curl
-      - vim
       - git
+      - vim
     state: present
   become: true
-
-- name: Ensure passwordless sudo for admin group
-  ansible.builtin.lineinfile:
-    dest: /etc/sudoers
-    regexp: '^%admin'
-    line: '%admin ALL=(ALL) NOPASSWD: ALL'
-    validate: 'visudo -cf %s'
-  become: true
-
-# Always end file with a newline for proper formatting
