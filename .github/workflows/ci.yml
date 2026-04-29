@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/*
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  terraform-format:
+    name: Terraform Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+        working-directory: terraform
+
+  ansible-lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Ansible and dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y python3-pip
+          pip3 install ansible ansible-lint
+      - name: Run ansible-lint
+        run: ansible-lint
+        working-directory: ansible
+
+  docker-compose-build:
+    name: Docker Compose Build
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:24.0.5-cli
+        options: --privileged
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build docker-compose services
+        run: |
+          docker compose -f docker/docker-compose.yml build
